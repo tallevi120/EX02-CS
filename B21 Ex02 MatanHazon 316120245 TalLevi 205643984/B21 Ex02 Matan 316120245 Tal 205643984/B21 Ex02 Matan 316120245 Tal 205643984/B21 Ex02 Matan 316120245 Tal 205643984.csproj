@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AIPlayer.cs" />
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="HumanPlayer.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
