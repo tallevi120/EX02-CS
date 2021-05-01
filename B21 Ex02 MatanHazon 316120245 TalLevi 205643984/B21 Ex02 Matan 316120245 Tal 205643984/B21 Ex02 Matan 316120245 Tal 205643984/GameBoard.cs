@@ -1,137 +1,315 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02_Matan_316120245_Tal_205643984
+﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
+    using System;
+    using System.Collections.Generic;
     class GameBoard
     {
 
-        public string[,] matrix1;
-        List<Player> Players = new List<Player>();
+        private string[,] m_MatrixBoard;
+        private List<Player> m_Players = new List<Player>();
 
-
-        public GameBoard()
+        public string[,] MatrixBoard
         {
-           
+            get { return m_MatrixBoard; }
+            set { m_MatrixBoard = value; }
         }
+        public List<Player> Players
+        {
+            get { return m_Players; }
+            set { m_Players = value; }
+        }
+
 
         public void SetupBoard()
         {
             bool validInputFlag = true;
-            int row = 0;
-            int col = 0;
+            int boardSize = 0;
+            Console.WriteLine("Hello Player One ! Please enter number of board size(range is 3-9) :");
             while (validInputFlag == true)
             {
-                Console.WriteLine("Hello Player One ! Please enter number of board rows :");
-                row = Convert.ToInt16(Console.ReadLine());
-                Console.WriteLine("Hello Player One ! Please enter number of board columns :");
-                col = Convert.ToInt16(Console.ReadLine());
-                if (row == col && 3<=row && row<=9)
+
+                boardSize = Convert.ToInt16(Console.ReadLine());
+                if (3<=boardSize && boardSize<=9)
                 {
                     validInputFlag = false;
-                    break;
                 }
                 else
                 {
-                    Console.WriteLine("Board must be square, from 3x3 to 9x9 :");
-                    continue;
+                    Console.WriteLine("Board must be square, from 3x3 to 9x9, Please try again :");
                 }
             }
-            matrix1 = new string[row, col];
+            m_MatrixBoard = new string[boardSize, boardSize];
         }
 
         public void SetupPlayers()
         {
-            this.Players.Add(new HumanPlayer("Player 1", "X"));
+            bool validInput = true;
+            this.m_Players.Add(new HumanPlayer("Player 1", " X"));
             Console.WriteLine("Please press 1 for play against Human Player, and 2 if you want to play agains the computer :");
-            int oponent = Convert.ToInt16(Console.ReadLine());
-            if (oponent == 1)
-            {
-                this.Players.Add(new HumanPlayer("Player 2", "O"));
-                Console.WriteLine("You choosed human player, GOOD LUCK !");
 
-            }
-            else if (oponent == 2)
+            while (validInput == true)
             {
-                this.Players.Add(new AIPlayer("AIPlayer 2", "O"));
-                Console.WriteLine("You choosed AI computer player, GOOD LUCK !");
+                int oponent = Convert.ToInt16(Console.ReadLine());
+                if (oponent == 1)
+                {
+                    this.m_Players.Add(new HumanPlayer("Player 2", " O"));
+                    Console.WriteLine("You choosed human player, GOOD LUCK !");
+                    validInput = false;
+
+                }
+                else if (oponent == 2)
+                {
+                    this.m_Players.Add(new AIPlayer("AIPlayer 2", " O"));
+                    Console.WriteLine("You choosed AI computer player, GOOD LUCK !");
+                    validInput = false;
+                }
+                else
+                {
+                    Console.WriteLine("WRONG Input, please chose 1 for human player, 2 for comuter player !");
+                }
             }
         }
 
 
-        public void Print()
+        public void PrintBoard()
         {
-            int rowLength = matrix1.GetLength(0);
+            int rowLength = m_MatrixBoard.GetLength(0);
             for (int j = 0; j < rowLength; j++)
             {
                 Console.Write(string.Format("{0,4}", j+1));
             }
-            Console.Write(Environment.NewLine + Environment.NewLine);
+            Console.Write(Environment.NewLine);
             for (int i = 0; i < rowLength; i++)
             {
                 Console.Write(string.Format("{0}|", i+1));
                 for (int j = 0; j < rowLength; j++)
                 {
-                    Console.Write(string.Format("{0,-3}|", matrix1[i, j]));
+                    Console.Write(string.Format("{0,-3}|", m_MatrixBoard[i, j]));
                 }
-                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.Write(Environment.NewLine);
                 for (int j = 0; j < rowLength; j++)
                 {
-                    Console.Write(string.Format("{0}", "==="));
+                    Console.Write(string.Format("{0}", "===="));
                 }
-                Console.Write(string.Format("{0}", "="));
-                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.Write(string.Format("{0}", "=="));
+                Console.Write(Environment.NewLine);
             }
         }
 
 
         public void GameLoop()
         {
-            while (true)
+            bool keepPlaying = true;
+            while (keepPlaying == true)
             {
-                for (var p = 0; p < this.Players.Count; p++)
+                for (int p = 0; p < this.m_Players.Count; p++)
                 {
-                    var player = this.Players[p];
+                    Player player = this.m_Players[p];
                     player.Move(this);
                     Ex02.ConsoleUtils.Screen.Clear();
-                    this.Print();
-                    //PlayerMove(player);
+                    this.PrintBoard();
+                    this.checkIfGameOver(out keepPlaying);
+                    if(keepPlaying == false)
+                    {
+                        bool flagForInput = true;
+                        this.PrintRecord();
+                        Console.WriteLine("Do you want Keep Playing ? (y | n)");
+                        while (flagForInput == true)
+                        {
+                            string key = Console.ReadLine();
+                            if (key == "n")
+                            {
+                                flagForInput = false; ; //some way to exit the game other than closing window.
+                            }
+                            else if (key == "y")
+                            {
+                                keepPlaying = true;
+                                flagForInput = false;
+                                this.CleanBoard();
+                                Ex02.ConsoleUtils.Screen.Clear();
+                                this.PrintBoard();
+                            }
+                            else
+                            {
+                                Console.WriteLine("WRONG INPUT ! , Do you want Keep Playing ? (y | n)");
+                            }
+
+
+                        }
+                        break;
+
+                    }
                 }
                 
-
-                //Console.WriteLine("Quit? (y | n)");
-                //var key = Console.ReadKey();
-                //if (key.KeyChar.ToString().ToLower() == "y")
-                //    break; //some way to exit the game other than closing window.
             }
+            
         }
 
-        public void PlayerMove(Player player)
+        public void PrintRecord()
         {
-            bool validCellFlag = true;
-            while (validCellFlag == true)
+            Console.WriteLine(string.Format(@"Player 1 number of wins is {0} 
+Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
+        }
+
+        public void CleanBoard()
+        {
+            Array.Clear(m_MatrixBoard, 0, m_MatrixBoard.Length);
+            
+        }
+
+        public void checkIfGameOver(out bool keepPlaying)
+        {
+            keepPlaying = true;
+            int boardSize = this.m_MatrixBoard.GetLength(0);
+            checkIfLoseRow(boardSize, out keepPlaying);
+            if(keepPlaying == true)
             {
-                Console.WriteLine(string.Format("{0}'s turn", player.m_PlayerName));
+                checkIfLoseCol(boardSize, out keepPlaying);
+            }
+            if (keepPlaying == true)
+            {
+                checkIfLoseDiagonal(boardSize, out keepPlaying);
+            }
+            if (keepPlaying == true)
+            {
+                checkIfFull(out keepPlaying);
+            }
 
-                Console.WriteLine("Please enter row");
-                int row = Convert.ToInt16(Console.ReadLine());
-                Console.WriteLine("Please enter column");
-                int col = Convert.ToInt16(Console.ReadLine());
+        }
 
-                //if (board.Move(player, row, col))
-                //    break;
-                if(matrix1[row, col] == null)
+        public void checkIfLoseRow(int size , out bool keepPlaying)
+        {
+            keepPlaying = true;
+            bool foundLose = true;
+            for (int i = 0; i < size - 1; i++)
+            {
+                for (int j = 0; j < size - 1; j++)
                 {
-                    matrix1[row, col] = player.m_Mark;
-                    validCellFlag = false;
+                    if (this.m_MatrixBoard[i, j] != this.m_MatrixBoard[i, j + 1] || this.m_MatrixBoard[i, j] == null)
+                    {
+                        foundLose = false;
+                        break;
+                    }
+                }
+                if (foundLose == true)
+                {
+                    keepPlaying = false;
+                    if (this.m_Players[0].Mark == this.m_MatrixBoard[i, 0])
+                    {
+                        Console.WriteLine("Game reuslt is - Player 2 WINS");
+                        this.m_Players[1].Wins++;                       
+                    }
+                    else
+                    {
+                        Console.WriteLine("Game reuslt is - Player 1 WINS");
+                        this.m_Players[0].Wins++;
+                    }
+                    break;
+                }
+            }
+        }
+        public void checkIfLoseCol(int size, out bool keepPlaying)
+        {
+            keepPlaying = true;
+            bool foundLose = true;
+            for (int i = 0; i < size - 1; i++)
+            {
+                for (int j = 0; j < size - 1; j++)
+                {
+                    if (this.m_MatrixBoard[j, i] != this.m_MatrixBoard[j + 1, i] || this.m_MatrixBoard[j, i] == null)
+                    {
+                        foundLose = false;
+                        break;
+                    }
+                }
+                if (foundLose == true)
+                {
+                    keepPlaying = false;
+                    if (this.m_Players[0].Mark == this.m_MatrixBoard[i, 0])
+                    {
+                        Console.WriteLine("Game reuslt is - Player 2 WINS");
+                        this.m_Players[1].Wins++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Game reuslt is - Player 1 WINS");
+                        this.m_Players[0].Wins++;
+                    }
+                    break;
+                }
+            }
+        }
+        public void checkIfLoseDiagonal(int size, out bool keepPlaying)
+        {
+            keepPlaying = true;
+            bool foundLoseDiagonal1 = true;
+            bool foundLoseDiagonal2 = true;
+            for (int i = 0; i < size - 1; i++)
+            {
+              
+                if (this.m_MatrixBoard[i, i] != this.m_MatrixBoard[i + 1, i + 1] || this.m_MatrixBoard[i, i] == null)
+                {
+                    foundLoseDiagonal1 = false;
+                }
+                if (this.m_MatrixBoard[size - 1 - i, i] != this.m_MatrixBoard[size - 2 - i, i + 1] || this.m_MatrixBoard[size - 1 - i, i] == null)
+                {
+                    foundLoseDiagonal2 = false;
+                }
+
+            }
+
+            if (foundLoseDiagonal1 == true)
+            {
+                keepPlaying = false;
+                if (this.m_Players[0].Mark == this.m_MatrixBoard[0, 0])
+                {
+                    Console.WriteLine("Game reuslt is - Player 2 WINS");
+                    this.m_Players[1].Wins++;
                 }
                 else
                 {
-                    Console.WriteLine("Cell already taken, choose again");
-                    continue;
+                    Console.WriteLine("Game reuslt is - Player 1 WINS");
+                    this.m_Players[0].Wins++;
                 }
             }
+            else if(foundLoseDiagonal2 == true)
+            {
+                keepPlaying = false;
+                if (this.m_Players[0].Mark == this.m_MatrixBoard[size - 1, 0])
+                {
+                    Console.WriteLine("Game reuslt is - Player 2 WINS");
+                    this.m_Players[1].Wins++;
+                }
+                else
+                {
+                    Console.WriteLine("Game reuslt is - Player 1 WINS");
+                    this.m_Players[0].Wins++;
+                }
+            }
+        }
+        public void checkIfFull(out bool keepPlaying)
+        {
+            keepPlaying = true;
+            foreach (string i in this.m_MatrixBoard)
+            {
+                if(i == null)
+                {
+                    return;
+                }
+            }
+
+            Console.WriteLine("Game reuslt is EVEN");
+            keepPlaying = false;
+        }
+
+        
+        public void CheckIfQuit(string input)
+        {
+            if (input == "Q")
+            {
+                Environment.Exit(0);
+            }
+            return;
         }
 
     }

@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02_Matan_316120245_Tal_205643984
+﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
+    using System;
     class Program
     {
         public static void Main()
         {
             Console.WriteLine("Tic Tac Toe Game");
-            //HumanPlayer playerOne = new
-            //HumanPlayer("Player 1", "X");
             GameBoard board = new GameBoard();
-            board.SetupPlayers();
             board.SetupBoard();
-            board.Print();
+            board.SetupPlayers();
+            board.PrintBoard();
             board.GameLoop();
-
 
         }
     }

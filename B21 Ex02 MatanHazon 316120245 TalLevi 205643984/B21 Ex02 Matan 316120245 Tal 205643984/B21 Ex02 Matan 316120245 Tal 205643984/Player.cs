@@ -1,14 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02_Matan_316120245_Tal_205643984
+﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
-    class Player
+    abstract class Player
     {
-        internal string m_PlayerName;
-        internal string m_Mark;
-        internal int m_Wins;
+        private string m_PlayerName;
+        private string m_Mark;
+        private int m_Wins;
+        public string PlayerName
+        {
+            get { return m_PlayerName; }
+            set { m_PlayerName = value; }
+        }
+        public string Mark
+        {
+            get { return m_Mark; }
+            set { m_Mark = value; }
+        }
+        public int Wins
+        {
+            get { return m_Wins; }
+            set { m_Wins = value; }
+        }
 
         public virtual void Move(GameBoard gameBoard)
         {

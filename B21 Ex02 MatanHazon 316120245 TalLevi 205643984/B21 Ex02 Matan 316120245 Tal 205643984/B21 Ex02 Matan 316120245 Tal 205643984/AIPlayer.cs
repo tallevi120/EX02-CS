@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02_Matan_316120245_Tal_205643984
+﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
+    using System;
     class AIPlayer : Player
     {
 
 
         public AIPlayer(string _playerName, string _mark)
         {
-            m_PlayerName = _playerName;
-            m_Mark = _mark;
-            m_Wins = 0;
+            this.PlayerName = _playerName;
+            this.Mark = _mark;
+            this.Wins = 0;
         }
 
         public override void Move(GameBoard board)
@@ -21,12 +18,12 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
             bool validCellFlag = true;
             while (validCellFlag == true)
             {
-                Console.WriteLine(string.Format("{0}'s turn", this.m_PlayerName));
-                int row = rnd.Next(0, (int)(board.matrix1.Length / Math.Sqrt(board.matrix1.Length)));
-                int col = rnd.Next(0, (int)(board.matrix1.Length / Math.Sqrt(board.matrix1.Length)));
-                if (board.matrix1[row, col] == null)
+                Console.WriteLine(string.Format("{0}'s turn, MARK is{1}", this.PlayerName, this.Mark));
+                int row = rnd.Next(0, (int)(board.MatrixBoard.Length / Math.Sqrt(board.MatrixBoard.Length)));
+                int col = rnd.Next(0, (int)(board.MatrixBoard.Length / Math.Sqrt(board.MatrixBoard.Length)));
+                if (board.MatrixBoard[row, col] == null)
                 {
-                    board.matrix1[row, col] = this.m_Mark;
+                    board.MatrixBoard[row, col] = this.Mark;
                     validCellFlag = false;
                 }
                 else
