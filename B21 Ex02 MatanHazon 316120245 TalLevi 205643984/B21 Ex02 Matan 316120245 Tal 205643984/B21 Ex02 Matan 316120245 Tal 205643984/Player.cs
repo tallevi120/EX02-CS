@@ -4,7 +4,7 @@
     {
         private string m_PlayerName;
         private string m_Mark;
-        private int    m_Wins;
+        private int m_Wins;
 
         public string PlayerName
         {

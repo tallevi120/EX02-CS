@@ -14,22 +14,70 @@
         public override void Move(GameBoard i_Board)
         {
             Random rnd = new Random();
-            bool   validCellFlag = true;
+            bool validCellFlag = true;
+            bool ifExist = false;
+            short timerForAI = 0;
 
             while(validCellFlag == true)
             {
                 int row = rnd.Next(0, (int)(i_Board.MatrixBoard.Length / Math.Sqrt(i_Board.MatrixBoard.Length)));
                 int col = rnd.Next(0, (int)(i_Board.MatrixBoard.Length / Math.Sqrt(i_Board.MatrixBoard.Length)));
 
-                Console.WriteLine(string.Format("{0}'s turn, MARK is{1}", this.PlayerName, this.Mark));
                 if(i_Board.MatrixBoard[row, col] == null)
                 {
-                    i_Board.MatrixBoard[row, col] = this.Mark;
-                    validCellFlag = false;
+                    timerForAI++;
+                    if(timerForAI <= 100)
+                    {
+                        FindInRow(i_Board, row, " O", out ifExist);
+                        if(ifExist == true)
+                        {
+                            continue;
+                        }
+
+                        FindInCol(i_Board, col, " O", out ifExist);
+                        if(ifExist == true)
+                        {
+                            continue;
+                        }
+
+                        i_Board.MatrixBoard[row, col] = this.Mark;
+                        validCellFlag = false;
+                    }
+                    else
+                    {
+                        i_Board.MatrixBoard[row, col] = this.Mark;
+                        validCellFlag = false;
+                    }
                 }
                 else
                 {
                     continue;
+                }
+            }            
+        }
+
+        public void FindInRow(GameBoard i_Board, int row, string i_Input, out bool ifExist)
+        {
+            ifExist = false;
+            for(int i = 0 ; i < i_Board.MatrixBoard.GetLength(0) ; i++)
+            {
+                if(i_Board.MatrixBoard[row,i] == i_Input)
+                {
+                    ifExist = true;
+                    break;
+                }
+            }
+        }
+
+        public void FindInCol(GameBoard i_Board, int col, string i_Input, out bool ifExist)
+        {
+            ifExist = false;
+            for(int i = 0 ; i < i_Board.MatrixBoard.GetLength(0) ; i++)
+            {
+                if(i_Board.MatrixBoard[i, col] == i_Input)
+                {
+                    ifExist = true;
+                    break;
                 }
             }
         }

@@ -5,7 +5,7 @@
 
     public class GameBoard
     {
-        private string[,]    m_MatrixBoard;
+        private string[,] m_MatrixBoard;
         private List<Player> m_Players = new List<Player>();
 
         public string[,] MatrixBoard
@@ -36,8 +36,8 @@
 
         public void SetupBoard()
         {
-            bool   validInputFlag = true;
-            short  boardSize = 0;
+            bool validInputFlag = true;
+            short boardSize = 0;
 
             Console.WriteLine("Hello Player One ! Please enter number of board size(range is 3-9) :");
             while(validInputFlag == true)
@@ -58,7 +58,7 @@
 
         public void SetupPlayers()
         {
-            bool  validInput = true;
+            bool validInput = true;
             short oponent;
 
             this.m_Players.Add(new HumanPlayer("Player 1", " X"));
@@ -131,7 +131,7 @@
                     if(keepPlaying == false)
                     {
                         bool flagForInput = true;
-                        this.PrintRecord();
+                        this.printRecord();
                         Console.WriteLine("Do you want Keep Playing ? (y | n)");
                         while(flagForInput == true)
                         {
@@ -145,7 +145,7 @@
                             {
                                 keepPlaying = true;
                                 flagForInput = false;
-                                this.CleanBoard();
+                                this.cleanBoard();
                                 Ex02.ConsoleUtils.Screen.Clear();
                                 this.PrintBoard();
                             }
@@ -161,18 +161,18 @@
             }
         }
 
-        public void PrintRecord()
+        private void printRecord()
         {
             Console.WriteLine(string.Format(@"Player 1 number of wins is {0} 
-Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
+Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
         }
 
-        public void CleanBoard()
+        private void cleanBoard()
         {
             Array.Clear(m_MatrixBoard, 0, m_MatrixBoard.Length);
         }
 
-        public void checkIfGameOver(out bool io_KeepPlaying)
+        private void checkIfGameOver(out bool io_KeepPlaying)
         {
             io_KeepPlaying = true;
             int boardSize = this.m_MatrixBoard.GetLength(0);
@@ -194,7 +194,7 @@ Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
             }
         }
 
-        public void checkIfLoseRow(int size, out bool o_KeepPlaying)
+        private void checkIfLoseRow(int size, out bool o_KeepPlaying)
         {
             o_KeepPlaying = true;
             bool foundLose = true;
@@ -229,7 +229,7 @@ Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
             }
         }
 
-        public void checkIfLoseCol(int size, out bool o_KeepPlaying)
+        private void checkIfLoseCol(int size, out bool o_KeepPlaying)
         {
             o_KeepPlaying = true;
             bool foundLose = true;
@@ -264,7 +264,7 @@ Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
             }
         }
 
-        public void checkIfLoseDiagonal(int size, out bool o_KeepPlaying)
+        private void checkIfLoseDiagonal(int size, out bool o_KeepPlaying)
         {
             o_KeepPlaying = true;
             bool foundLoseDiagonal1 = true;
@@ -314,7 +314,7 @@ Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
             }
         }
 
-        public void checkIfFull(out bool o_KeepPlaying)
+        private void checkIfFull(out bool o_KeepPlaying)
         {
             o_KeepPlaying = true;
 
@@ -330,7 +330,7 @@ Player 2 number of wins is {1}",m_Players[0].Wins , m_Players[1].Wins));
             o_KeepPlaying = false;
         }
         
-        public void CheckIfQuit(string i_Input)
+        internal void CheckIfQuit(string i_Input)
         {
             if(i_Input == "Q")
             {

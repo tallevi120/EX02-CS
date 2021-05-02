@@ -6,8 +6,9 @@
     {
         public static void Main()
         {
-            Console.WriteLine("Tic Tac Toe Game");
             GameBoard board = new GameBoard();
+
+            Console.WriteLine("Tic Tac Toe Game");
             board.SetupBoard();
             board.SetupPlayers();
             board.PrintBoard();

@@ -13,15 +13,16 @@
         
         public override void Move(GameBoard i_Board)
         {
-            bool   validCellFlag = true;
-            short  boardSize = (short)i_Board.MatrixBoard.GetLength(0);
-            short  row;
-            short  col;
+            bool validCellFlag = true;
+            short boardSize = (short)i_Board.MatrixBoard.GetLength(0);
+            short row;
+            short col;
             string input;
 
             while(validCellFlag == true)
             {
                 Console.WriteLine(string.Format("{0}'s turn, MARK is{1}", this.PlayerName, this.Mark));
+                Console.WriteLine("You can press 'Q' to quit the game");
                 Console.WriteLine("Please enter row");
                 input = Console.ReadLine();
                 i_Board.CheckIfQuit(input);
@@ -43,10 +44,10 @@
                 }
                 else
                 {
-                    col = -1;
+                    col = -1; 
                 }
 
-                if(row == -1 || col == -1)
+                if (row == -1 || col == -1)
                 {
                     Console.WriteLine("WRONG INPUT ! please put numbers inside the range !");
                     continue;
