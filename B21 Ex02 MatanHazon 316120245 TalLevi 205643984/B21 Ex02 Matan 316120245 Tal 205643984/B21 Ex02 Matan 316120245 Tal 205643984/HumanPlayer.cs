@@ -1,29 +1,31 @@
-﻿using System;
-namespace B21_Ex02_Matan_316120245_Tal_205643984
+﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
-    class HumanPlayer : Player
-    {
+    using System;
 
-        public HumanPlayer(string _playerName , string _mark)
+    public class HumanPlayer : Player
+    {
+        public HumanPlayer(string i_PlayerName, string i_Mark)
         {
-            this.PlayerName = _playerName;
-            this.Mark = _mark;
+            this.PlayerName = i_PlayerName;
+            this.Mark = i_Mark;
             this.Wins = 0;
         }
         
-        public override void Move(GameBoard board)
+        public override void Move(GameBoard i_Board)
         {
-            bool validCellFlag = true;
-            int boardSize = board.MatrixBoard.GetLength(0);
-            while (validCellFlag == true)
+            bool   validCellFlag = true;
+            short  boardSize = (short)i_Board.MatrixBoard.GetLength(0);
+            short  row;
+            short  col;
+            string input;
+
+            while(validCellFlag == true)
             {
                 Console.WriteLine(string.Format("{0}'s turn, MARK is{1}", this.PlayerName, this.Mark));
-                short row;
-                short col;
                 Console.WriteLine("Please enter row");
-                string input = Console.ReadLine();
-                board.CheckIfQuit(input);
-                if (Int16.TryParse(input, out row)) 
+                input = Console.ReadLine();
+                i_Board.CheckIfQuit(input);
+                if(short.TryParse(input, out row)) 
                 {
                     row--;
                 }
@@ -31,10 +33,11 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
                 {
                     row = -1;
                 }
+
                 Console.WriteLine("Please enter column");
                 input = Console.ReadLine();
-                board.CheckIfQuit(input);
-                if (Int16.TryParse(input, out col))
+                i_Board.CheckIfQuit(input);
+                if(short.TryParse(input, out col))
                 {
                     col--;
                 }
@@ -43,7 +46,7 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
                     col = -1;
                 }
 
-                if (row == -1 || col == -1)
+                if(row == -1 || col == -1)
                 {
                     Console.WriteLine("WRONG INPUT ! please put numbers inside the range !");
                     continue;
@@ -53,9 +56,10 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
                     Console.WriteLine("Out of bounds of the board please put numbers inside the range !");
                     continue;
                 }
-                if (board.MatrixBoard[row, col] == null)
+
+                if(i_Board.MatrixBoard[row, col] == null)
                 {
-                    board.MatrixBoard[row, col] = this.Mark;
+                    i_Board.MatrixBoard[row, col] = this.Mark;
                     validCellFlag = false;
                 }
                 else
@@ -63,9 +67,6 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
                     Console.WriteLine("Cell already taken, choose again");
                 }
             }
-
         }
-
-
     }
 }

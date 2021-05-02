@@ -1,7 +1,8 @@
 ﻿namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
     using System;
-    class Program
+
+    public class Program
     {
         public static void Main()
         {
@@ -11,7 +12,6 @@
             board.SetupPlayers();
             board.PrintBoard();
             board.GameLoop();
-
         }
     }
 }
