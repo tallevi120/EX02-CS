@@ -7,11 +7,12 @@
         public static void Main()
         {
             GameBoard board = new GameBoard();
+            GameBoardUI boardUI = new GameBoardUI();
 
             Console.WriteLine("Tic Tac Toe Game");
-            board.SetupBoard();
-            board.SetupPlayers();
-            board.PrintBoard();
+            board.SetupBoard(boardUI.GetBoardSize());
+            board.SetupPlayers(boardUI.SelectTheOpponent());
+            boardUI.PrintBoard(board.MatrixBoard);
             board.GameLoop();
         }
     }

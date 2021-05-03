@@ -7,6 +7,7 @@
     {
         private string[,] m_MatrixBoard;
         private List<Player> m_Players = new List<Player>();
+        private GameBoardUI m_BoardUI = new GameBoardUI();
 
         public string[,] MatrixBoard
         {
@@ -34,137 +35,54 @@
             }
         }
 
-        public void SetupBoard()
+        public void SetupBoard(short i_BoardSize)
         {
-            bool validInputFlag = true;
-            short boardSize = 0;
-
-            Console.WriteLine("Hello Player One ! Please enter number of board size(range is 3-9) :");
-            while(validInputFlag == true)
-            {
-                short.TryParse(Console.ReadLine(), out boardSize);
-                if(boardSize >= 3 && boardSize <= 9)
-                {
-                    validInputFlag = false;
-                }
-                else
-                {
-                    Console.WriteLine("Board must be square, from 3x3 to 9x9, Please try again :");
-                }
-            }
-
-            m_MatrixBoard = new string[boardSize, boardSize];
+            m_MatrixBoard = new string[i_BoardSize, i_BoardSize];
         }
 
-        public void SetupPlayers()
+        public void SetupPlayers(short i_Oponent)
         {
-            bool validInput = true;
-            short oponent;
-
             this.m_Players.Add(new HumanPlayer("Player 1", " X"));
-            Console.WriteLine("Please press 1 for play against Human Player, and 2 if you want to play agains the computer :");
-
-            while(validInput == true)
+            if(i_Oponent == 1)
             {
-                short.TryParse(Console.ReadLine(), out oponent);
-                if(oponent == 1)
-                {
-                    this.m_Players.Add(new HumanPlayer("Player 2", " O"));
-                    Console.WriteLine("You choosed human player, GOOD LUCK !");
-                    validInput = false;
-                }
-                else if(oponent == 2)
-                {
-                    this.m_Players.Add(new AIPlayer("AIPlayer 2", " O"));
-                    Console.WriteLine("You choosed AI computer player, GOOD LUCK !");
-                    validInput = false;
-                }
-                else
-                {
-                    Console.WriteLine("WRONG Input, please chose 1 for human player, 2 for comuter player !");
-                }
+                this.m_Players.Add(new HumanPlayer("Player 2", " O"));
             }
-        }
-
-        public void PrintBoard()
-        {
-            int rowLength = m_MatrixBoard.GetLength(0);
-
-            for(int j = 0 ; j < rowLength ; j++)
+            else if(i_Oponent == 2)
             {
-                Console.Write(string.Format("{0,4}", j + 1));
-            }
-
-            Console.Write(Environment.NewLine);
-            for(int i = 0 ; i < rowLength ; i++)
-            {
-                Console.Write(string.Format("{0}|", i + 1));
-                for(int j = 0 ; j < rowLength ; j++)
-                {
-                    Console.Write(string.Format("{0,-3}|", m_MatrixBoard[i, j]));
-                }
-
-                Console.Write(Environment.NewLine);
-                for(int j = 0 ; j < rowLength ; j++)
-                {
-                    Console.Write(string.Format("{0}", "===="));
-                }
-
-                Console.Write(string.Format("{0}", "=="));
-                Console.Write(Environment.NewLine);
+                this.m_Players.Add(new AIPlayer("AIPlayer 2", " O"));
             }
         }
 
         public void GameLoop()
         {
             bool keepPlaying = true;
+            Player player;
 
-            while(keepPlaying == true)
+            while (keepPlaying == true)
             {
                 for(int p = 0 ; p < this.m_Players.Count ; p++)
                 {
-                    Player player = this.m_Players[p];
+                    player = this.m_Players[p];
                     player.Move(this);
                     Ex02.ConsoleUtils.Screen.Clear();
-                    this.PrintBoard();
+                    m_BoardUI.PrintBoard(this.m_MatrixBoard);
                     this.checkIfGameOver(out keepPlaying);
                     if(keepPlaying == false)
                     {
-                        bool flagForInput = true;
-                        this.printRecord();
-                        Console.WriteLine("Do you want Keep Playing ? (y | n)");
-                        while(flagForInput == true)
+                        m_BoardUI.PrintRecord(this.m_Players);
+                        ///some way to exit the game other than closing window.
+                        if(m_BoardUI.IfContinue())
                         {
-                            string key = Console.ReadLine();
-
-                            if(key == "n")
-                            {
-                                flagForInput = false; ///some way to exit the game other than closing window.
-                            }
-                            else if(key == "y")
-                            {
-                                keepPlaying = true;
-                                flagForInput = false;
-                                this.cleanBoard();
-                                Ex02.ConsoleUtils.Screen.Clear();
-                                this.PrintBoard();
-                            }
-                            else
-                            {
-                                Console.WriteLine("WRONG INPUT ! , Do you want Keep Playing ? (y | n)");
-                            }
+                            keepPlaying = true;
+                            this.cleanBoard();
+                            Ex02.ConsoleUtils.Screen.Clear();
+                            m_BoardUI.PrintBoard(this.m_MatrixBoard); 
                         }
 
                         break;
                     }
                 }
             }
-        }
-
-        private void printRecord()
-        {
-            Console.WriteLine(string.Format(@"Player 1 number of wins is {0} 
-Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
         }
 
         private void cleanBoard()
@@ -209,7 +127,6 @@ Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
                         foundLose = false;
                         break;
                     }
-
                 }
 
                 if(foundLose == true)

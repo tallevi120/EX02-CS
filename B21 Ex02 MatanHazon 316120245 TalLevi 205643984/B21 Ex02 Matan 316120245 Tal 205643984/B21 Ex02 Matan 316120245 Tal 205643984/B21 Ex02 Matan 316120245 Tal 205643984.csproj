@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AIPlayer.cs" />
+    <Compile Include="GameBoardUI.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="HumanPlayer.cs" />
