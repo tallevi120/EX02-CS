@@ -199,8 +199,9 @@ Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
             o_KeepPlaying = true;
             bool foundLose = true;
 
-            for(int i = 0 ; i < size - 1 ; i++)
+            for(int i = 0 ; i < size ; i++)
             {
+                foundLose = true;
                 for(int j = 0 ; j < size - 1 ; j++)
                 {
                     if(this.m_MatrixBoard[i, j] != this.m_MatrixBoard[i, j + 1] || this.m_MatrixBoard[i, j] == null)
@@ -208,6 +209,7 @@ Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
                         foundLose = false;
                         break;
                     }
+
                 }
 
                 if(foundLose == true)
@@ -234,8 +236,9 @@ Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
             o_KeepPlaying = true;
             bool foundLose = true;
 
-            for(int i = 0 ; i < size - 1 ; i++)
+            for(int i = 0 ; i < size ; i++)
             {
+                foundLose = true;
                 for(int j = 0 ; j < size - 1 ; j++)
                 {
                     if(this.m_MatrixBoard[j, i] != this.m_MatrixBoard[j + 1, i] || this.m_MatrixBoard[j, i] == null)
@@ -277,7 +280,8 @@ Player 2 number of wins is {1}", m_Players[0].Wins, m_Players[1].Wins));
                     foundLoseDiagonal1 = false;
                 }
 
-                if(this.m_MatrixBoard[size - 1 - i, i] != this.m_MatrixBoard[size - 2 - i, i + 1] || this.m_MatrixBoard[size - 1 - i, i] == null)
+                if(this.m_MatrixBoard[size - 1 - i, i] != this.m_MatrixBoard[size - 2 - i, i + 1] || 
+                    this.m_MatrixBoard[size - 1 - i, i] == null)
                 {
                     foundLoseDiagonal2 = false;
                 }

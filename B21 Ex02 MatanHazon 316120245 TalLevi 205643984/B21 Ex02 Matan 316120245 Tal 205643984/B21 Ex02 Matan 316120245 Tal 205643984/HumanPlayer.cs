@@ -47,7 +47,7 @@
                     col = -1; 
                 }
 
-                if (row == -1 || col == -1)
+                if(row == -1 || col == -1)
                 {
                     Console.WriteLine("WRONG INPUT ! please put numbers inside the range !");
                     continue;

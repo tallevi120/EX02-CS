@@ -45,8 +45,6 @@
             }
         }
 
-        public virtual void Move(GameBoard i_GameBoard)
-        {
-        }
+        public abstract void Move(GameBoard i_GameBoard);
     }
 }
