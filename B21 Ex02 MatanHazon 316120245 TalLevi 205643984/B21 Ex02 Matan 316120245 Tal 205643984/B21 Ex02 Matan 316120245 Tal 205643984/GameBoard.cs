@@ -58,7 +58,7 @@
             bool keepPlaying = true;
             Player player;
 
-            while (keepPlaying == true)
+            while(keepPlaying == true)
             {
                 for(int p = 0 ; p < this.m_Players.Count ; p++)
                 {

@@ -44,7 +44,7 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
             while(validInputFlag == true)
             {
                 short.TryParse(Console.ReadLine(), out boardSize);
-                if (boardSize >= 3 && boardSize <= 9)
+                if(boardSize >= 3 && boardSize <= 9)
                 {
                     validInputFlag = false;
                 }
@@ -89,22 +89,22 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
         {
             int rowLength = i_MatrixBoard.GetLength(0);
 
-            for (int j = 0; j < rowLength; j++)
+            for(int j = 0 ; j < rowLength ; j++)
             {
                 Console.Write(string.Format("{0,4}", j + 1));
             }
 
             Console.Write(Environment.NewLine);
-            for (int i = 0; i < rowLength; i++)
+            for(int i = 0 ; i < rowLength ; i++)
             {
                 Console.Write(string.Format("{0}|", i + 1));
-                for (int j = 0; j < rowLength; j++)
+                for(int j = 0 ; j < rowLength ; j++)
                 {
                     Console.Write(string.Format("{0,-3}|", i_MatrixBoard[i, j]));
                 }
 
                 Console.Write(Environment.NewLine);
-                for (int j = 0; j < rowLength; j++)
+                for(int j = 0 ; j < rowLength ; j++)
                 {
                     Console.Write(string.Format("{0}", "===="));
                 }
@@ -130,12 +130,12 @@ Player 2 number of wins is {1}", i_Players[0].Wins, i_Players[1].Wins));
             while(flagForInput == true)
             {
                 key = Console.ReadLine();
-                if (key == "n")
+                if(key == "n")
                 {
                     flagForInput = false;
                     ifContinueFlag = false;
                 }
-                else if (key == "y")
+                else if(key == "y")
                 {
                     flagForInput = false;
                 }

@@ -33,7 +33,7 @@
                 {
                     timerForAI++;
                     ///The number of options that the AI has to solve in a smart way and if not then it works randomly.
-                    if (timerForAI <= 1000)
+                    if(timerForAI <= 1000)
                     {
                         countHowManyXInDiagonal = 0; ///deafult value for the "if" in the method.
                         countHowManyOInDiagonal = 1; ///deafult value for the "if" in the method.
@@ -48,26 +48,43 @@
                         {
                             if(countHowManyOInCol < sizeOfMatrix - 1)
                             {
-                                if(countHowManyXInRow >= sizeOfMatrix / 2 || countHowManyXInCol >= sizeOfMatrix / 2 ||
+                                if(countHowManyOInDiagonal < sizeOfMatrix - 1)
+                                {
+                                    if(countHowManyXInRow >= sizeOfMatrix / 2 || countHowManyXInCol >= sizeOfMatrix / 2 ||
                                     countHowManyXInDiagonal >= sizeOfMatrix / 2)
-                                {
-                                    if(countHowManyOInRow == 0 || countHowManyOInCol == 0 || countHowManyOInDiagonal == 0)
                                     {
-                                        continue;
+                                        if(countHowManyOInRow == 0 || countHowManyOInCol == 0 || countHowManyOInDiagonal == 0)
+                                        {
+                                            continue;
+                                        }
                                     }
-                                }
 
-                                if(countHowManyXInRow >= countHowManyOInRow || countHowManyXInCol >= countHowManyOInCol ||
-                                    countHowManyXInDiagonal >= countHowManyOInDiagonal)
+                                    i_Board.MatrixBoard[row, col] = this.Mark;
+                                    validCellFlag = false;
+                                }                             
+                            }
+                        }
+                    }
+                    else if(timerForAI <= 1100)
+                    {
+                        ///100 more options that the AI has to dont lose in a smart way and if not then it works randomly.
+                        countHowManyOInDiagonal = 0; ///deafult value for the "if" in the method.
+                        if(row == col)
+                        {
+                            countHowManyOInDiagonal = findInDiagonal(i_Board, " O", out countHowManyXInDiagonal);
+                        }
+
+                        countHowManyOInRow = findInRow(i_Board, row, " O", out countHowManyXInRow);
+                        countHowManyOInCol = findInCol(i_Board, col, " O", out countHowManyXInCol);
+                        if(countHowManyOInRow < sizeOfMatrix - 1)
+                        {
+                            if(countHowManyOInCol < sizeOfMatrix - 1)
+                            {
+                                if(countHowManyOInDiagonal < sizeOfMatrix - 1)
                                 {
-                                    if (countHowManyOInRow == 0 || countHowManyOInCol == 0 || countHowManyOInDiagonal == 0)
-                                    {
-                                        continue;
-                                    }
+                                    i_Board.MatrixBoard[row, col] = this.Mark;
+                                    validCellFlag = false;
                                 }
-
-                                i_Board.MatrixBoard[row, col] = this.Mark;
-                                validCellFlag = false;
                             }
                         }
                     }
