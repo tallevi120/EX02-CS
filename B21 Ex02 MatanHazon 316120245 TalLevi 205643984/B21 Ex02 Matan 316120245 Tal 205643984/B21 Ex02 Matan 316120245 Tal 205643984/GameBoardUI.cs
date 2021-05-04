@@ -6,33 +6,64 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
 {
     public class GameBoardUI
     {
-        private string[,] m_MatrixBoard;
-        private List<Player> m_Players = new List<Player>();
-
-        public string[,] MatrixBoard
+        public static short GetRowAndCol(GameBoard i_Board, Player i_Player, out short io_Col)
         {
-            get
+            io_Col = 0; ///deafult value
+            bool validCellFlag = true;
+            short boardSize = (short)i_Board.MatrixBoard.GetLength(0);
+            short row = 0; ///deafult value
+            string input;
+
+            while (validCellFlag == true)
             {
-                return m_MatrixBoard;
+                Console.WriteLine(string.Format("{0}'s turn, MARK is{1}", i_Player.PlayerName, i_Player.Mark));
+                Console.WriteLine("You can press 'Q' to quit the game");
+                Console.WriteLine("Please enter row");
+                input = Console.ReadLine();
+                i_Board.CheckIfQuit(input);
+                if (short.TryParse(input, out row))
+                {
+                    row--;
+                }
+                else
+                {
+                    row = -1;
+                }
+
+                Console.WriteLine("Please enter column");
+                input = Console.ReadLine();
+                i_Board.CheckIfQuit(input);
+                if (short.TryParse(input, out io_Col))
+                {
+                    io_Col--;
+                }
+                else
+                {
+                    io_Col = -1;
+                }
+
+                if (row == -1 || io_Col == -1)
+                {
+                    Console.WriteLine("WRONG INPUT ! please put numbers inside the range !");
+                    continue;
+                }
+                else if (row >= boardSize || io_Col >= boardSize || row < 0 || io_Col < 0)
+                {
+                    Console.WriteLine("Out of bounds of the board please put numbers inside the range !");
+                    continue;
+                }
+
+                if (i_Board.IfCellEmpty(row, io_Col))
+                {
+                    validCellFlag = false;
+                }
+                else
+                {
+                    Console.WriteLine("Cell already taken, choose again");
+                }
             }
 
-            set
-            {
-                m_MatrixBoard = value;
-            }
-        }
-
-        public List<Player> Players
-        {
-            get
-            {
-                return m_Players;
-            }
-
-            set
-            {
-                m_Players = value;
-            }
+            return row;
         }
 
         public short GetBoardSize()
@@ -44,7 +75,7 @@ namespace B21_Ex02_Matan_316120245_Tal_205643984
             while(validInputFlag == true)
             {
                 short.TryParse(Console.ReadLine(), out boardSize);
-                if(boardSize >= 3 && boardSize <= 9)
+                if(GameBoard.CheckIfInRange(boardSize, 3, 9))
                 {
                     validInputFlag = false;
                 }

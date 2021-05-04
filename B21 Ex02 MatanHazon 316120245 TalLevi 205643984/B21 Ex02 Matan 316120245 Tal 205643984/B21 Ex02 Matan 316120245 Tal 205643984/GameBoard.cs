@@ -35,6 +35,11 @@
             }
         }
 
+        public static bool CheckIfInRange(short i_Number, short i_From, short i_To)
+        {
+            return i_Number >= i_From && i_Number <= i_To;
+        }
+
         public void SetupBoard(short i_BoardSize)
         {
             m_MatrixBoard = new string[i_BoardSize, i_BoardSize];
@@ -259,6 +264,11 @@
             }
 
             return;
+        }
+
+        public bool IfCellEmpty(short i_Row, short i_Col)
+        {
+            return this.MatrixBoard[i_Row, i_Col] == null;
         }
     }
 }
